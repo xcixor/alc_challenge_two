@@ -1,12 +1,13 @@
 package com.peter.travelmantics;
 
-public class TravelDeals {
+public class TravelDeal {
     private String mId;
     private String mTitle;
     private String mDescription;
     private String mPrice;
+    private String imgUrl;
 
-    public TravelDeals(String mId, String mTitle, String mDescription, String mPrice) {
+    public TravelDeal(String mTitle, String mDescription, String mPrice, String imgUrl) {
         this.mId = mId;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
