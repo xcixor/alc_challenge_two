@@ -7,10 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,12 +33,7 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv_deals);
-        final DealAdapter dealAdapter = new DealAdapter();
-        recyclerView.setAdapter(dealAdapter);
-        LinearLayoutManager dealsLayoutManager = new LinearLayoutManager(
-                this, VERTICAL, false);
-        recyclerView.setLayoutManager(dealsLayoutManager);
+
     }
 
     @Override
@@ -51,7 +50,41 @@ public class ListActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, DealActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.logout_menu:
+                logout();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Logout", "User logged out");
+                        FirebaseUtil.attachAuthListener();
+                    }
+                });
+        FirebaseUtil.detachListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseUtil.openFbReference("traveldeals", this);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv_deals);
+        final DealAdapter dealAdapter = new DealAdapter();
+        recyclerView.setAdapter(dealAdapter);
+        LinearLayoutManager dealsLayoutManager = new LinearLayoutManager(
+                this, VERTICAL, false);
+        recyclerView.setLayoutManager(dealsLayoutManager);
+        FirebaseUtil.attachAuthListener();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseUtil.detachListener();
     }
 }
