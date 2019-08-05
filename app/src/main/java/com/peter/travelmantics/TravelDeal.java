@@ -1,11 +1,15 @@
 package com.peter.travelmantics;
 
-public class TravelDeal {
+import java.io.Serializable;
+
+public class TravelDeal implements Serializable {
     private String mId;
     private String mTitle;
     private String mDescription;
     private String mPrice;
     private String imgUrl;
+
+    public TravelDeal(){}
 
     public TravelDeal(String mTitle, String mDescription, String mPrice, String imgUrl) {
         this.mId = mId;
