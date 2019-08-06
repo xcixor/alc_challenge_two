@@ -12,10 +12,20 @@ public class TravelDeal implements Serializable {
     public TravelDeal(){}
 
     public TravelDeal(String mTitle, String mDescription, String mPrice, String imgUrl) {
-        this.mId = mId;
+        this.setmId(mId);
         this.mTitle = mTitle;
-        this.mDescription = mDescription;
-        this.mPrice = mPrice;
+        this.setmTitle(mTitle);
+        this.setmDescription(mDescription);
+        this.setmPrice(mPrice);
+        this.setImgUrl(imgUrl);
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public String getmId() {
